@@ -1,4 +1,2 @@
 # keyvSqlite3
-
-# TODO
-add testing
+sqlite3 driver of [keyv](pkg.go.dev/github.com/simba-fs/keyv)

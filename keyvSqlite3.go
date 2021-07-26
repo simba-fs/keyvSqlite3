@@ -1,17 +1,15 @@
-package main
+package keyvsqlite3
 
 import (
 	"strings"
 
-	// "github.com/simba-fs/keyv"
-	"../keyv"
-	// "database/sql"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/simba-fs/keyv"
 )
 
 const createTable = `CREATE TABLE IF NOT EXISTS keyv (
-	key string,
+	key string PRIMARY KEY UNIQUE,
 	value string
 );`
 
@@ -53,7 +51,7 @@ func (a adapter) Set(key string, val string) error {
 		Value: val,
 	}
 
-	_, err := a.db.NamedExec(`INSERT INTO keyv (key, value) VALUES (:key, :value)`, data)
+	_, err := a.db.NamedExec(`INSERT OR REPLACE INTO keyv VALUES (:key, :value)`, data)
 	return err
 }
 
@@ -61,6 +59,28 @@ func (a adapter) Remove(key string) error {
 	_, err := a.db.Exec(`DELETE FROM keyv WHERE key = $1`, key)
 
 	return err
+}
+
+func (a adapter) Clear(namespace string) error {
+	// get all keys
+	keys, err := a.Keys()
+	if err != nil {
+		return err
+	}
+
+	stmt, err := a.db.Preparex(`DELETE FROM keyv WHERE key=$1`)
+	if err != nil {
+		return err
+	}
+
+	for _, key := range keys {
+		_, err := stmt.Exec("keyv:" + namespace + ":" + key)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func (a adapter) Keys() ([]string, error) {
@@ -73,7 +93,7 @@ func (a adapter) Keys() ([]string, error) {
 
 	keys := make([]string, len(data))
 	for index, value := range data {
-		keys[index] = value.Value
+		keys[index] = strings.SplitN(value.Key, ":", 3)[2]
 	}
 
 	return keys, nil
