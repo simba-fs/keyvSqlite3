@@ -61,7 +61,7 @@ func (a adapter) Remove(key string) error {
 	return err
 }
 
-func (a adapter) Clear(namespace string) error {
+func (a adapter) Clear(prefix string) error {
 	// get all keys
 	keys, err := a.Keys()
 	if err != nil {
@@ -74,9 +74,12 @@ func (a adapter) Clear(namespace string) error {
 	}
 
 	for _, key := range keys {
-		_, err := stmt.Exec("keyv:" + namespace + ":" + key)
-		if err != nil {
-			return err
+		if strings.HasPrefix(key, prefix) {
+			_, err := stmt.Exec(key)
+			if err != nil {
+				return err
+			}
+
 		}
 	}
 
@@ -93,7 +96,7 @@ func (a adapter) Keys() ([]string, error) {
 
 	keys := make([]string, len(data))
 	for index, value := range data {
-		keys[index] = strings.SplitN(value.Key, ":", 3)[2]
+		keys[index] = value.Key
 	}
 
 	return keys, nil

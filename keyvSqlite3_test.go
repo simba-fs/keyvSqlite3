@@ -89,6 +89,7 @@ func TestKeys(t *testing.T) {
 		t.Error(err)
 		return
 	}
+	t.Log(keys)
 
 	if len(keys) != 1 {
 		t.Error("numbers of key is error")
