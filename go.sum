@@ -15,3 +15,5 @@ github.com/simba-fs/keyv v1.3.6 h1:gQPk4lGqY4lEo5YA4H5QHqMAqdBV99hTXt5XoszL3XY=
 github.com/simba-fs/keyv v1.3.6/go.mod h1:Gz5uDOYU2XMuvEm81WD2I7Ars/bSh6hu4yhQ4pXMu9E=
 github.com/simba-fs/keyv v1.3.7 h1:XTIQBOf6UQicO1b/+7+XUJWDiboL+UvedOzl/oJb3rk=
 github.com/simba-fs/keyv v1.3.7/go.mod h1:Gz5uDOYU2XMuvEm81WD2I7Ars/bSh6hu4yhQ4pXMu9E=
+github.com/simba-fs/keyv v1.3.8 h1:axBhm0PlR3OJIJCbVh2D093e54cVgi5KKtsntHchm8Y=
+github.com/simba-fs/keyv v1.3.8/go.mod h1:Gz5uDOYU2XMuvEm81WD2I7Ars/bSh6hu4yhQ4pXMu9E=
